@@ -12,9 +12,7 @@ import random
 import os
 import numpy as np
 from dask.distributed import Client, as_completed
-
-# quspin is only needed to calculate renyi entropies and is annoying to install
-#import quspin
+import quspin
 
 code_version = "1.2"
 
@@ -1670,38 +1668,3 @@ def generate_entropies(psi, n_qubits, entropy_regions):
         entropy_results.append(renyi_entropy(psi, n_qubits, qubit_region))
 
     return entropy_results
-
-
-# This code down here is kept
-
-# import openfermion as of
-
-# Initialize an empty QubitOperator to store the full Hamiltonian
-# full_hamiltonian = of.QubitOperator()
-
-# # Loop through each adjacent pair of qubits in the 12-qubit chain
-# for i in range(n_qubits-1):  # from 0 to 10
-#     xx_term = of.QubitOperator(f"X{i} X{i+1}", 1)
-#     yy_term = of.QubitOperator(f"Y{i} Y{i+1}", 1)
-#     zz_term = of.QubitOperator(f"Z{i} Z{i+1}", .5)
-
-#     # Add these terms to the full Hamiltonian
-#     full_hamiltonian += xx_term
-#     full_hamiltonian += yy_term
-#     full_hamiltonian += zz_term
-
-# xx_term = of.QubitOperator(f"X{1} X{0}", 1)
-# yy_term = of.QubitOperator(f"Y{1} Y{0}", 1)
-# zz_term = of.QubitOperator(f"Z{1} Z{0}", .5)
-
-# full_hamiltonian += xx_term
-# full_hamiltonian += yy_term
-# full_hamiltonian += zz_term
-# # Convert to a sparse array
-# full_ham_array = of.get_sparse_operator(full_hamiltonian)
-
-# from openfermion.linalg import get_ground_state
-
-# ground_energy, a = get_ground_state(full_ham_array)
-
-# print(f"The ground state energy is {ground_energy}")
