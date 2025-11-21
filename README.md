@@ -10,7 +10,7 @@ This repository contains the source code for "Measurement-induced landscape tran
 * **Optimization:** Implements custom gradient descent schedules with analytical gradient calculation.
 * **Scalability:** Designed to handle parameter sweeps for high-dimensional ansatzes (HEA, HVA).
 
-### 🛠️ Tech Stack
+### Tech Stack
 * **Python** (NumPy, SciPy)
 * **Dask** (Parallel Task Scheduling)
 * **OpenFermion** (Hamiltonian definitions)
