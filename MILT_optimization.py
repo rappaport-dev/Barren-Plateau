@@ -187,8 +187,6 @@ def parallel_cost_and_grad(
     with ProgressBar():
         results = compute(*tasks, scheduler="processes")
 
-    #     np.save(file_name, results)
-
     # Reshape results
     cost_functions = np.array([result[0] for result in results]).reshape(
         n_shots, len(theta)
@@ -220,8 +218,6 @@ def non_parallel_cost_and_grad(
 ):
     tasks = []
 
-    # print("length of theta", len(theta))
-
     # Creating a list of delayed tasks
     for shot in range(n_shots):
         for d_i in range(len(theta)):
@@ -243,10 +239,6 @@ def non_parallel_cost_and_grad(
             tasks.append(task)
 
     results = tasks
-
-    # print("results shape", np.asarray(results).shape)
-
-    #     np.save(file_name, results)
 
     # Reshape results
     cost_functions = np.array([result[0] for result in results]).reshape(
@@ -466,7 +458,6 @@ def optimize_with_scipy(
         )
         costs_at_each_iteration.append(cost)
         iteration_ticker = iteration_ticker + 1
-        # print(iteration_ticker)
 
     result = minimize(
         fun=scipy_cost_and_grad,

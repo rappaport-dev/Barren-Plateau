@@ -410,7 +410,7 @@ def gradients_by_layer(
     dtheta=0.00001,
     return_analytic_suite=False,
     post_selected=False,
-    entropy_regions=[[]],
+    entropy_regions=None,
     periodic=False,
     get_layered_results=False,
     ham_type="z0z1",
@@ -433,6 +433,9 @@ def gradients_by_layer(
 
     dtheta controls the numeric calculation's precision.
     """
+
+    if entropy_regions is None:
+        entropy_regions = [[]]
 
     if (
         gradient_technique is not None
@@ -524,12 +527,16 @@ def HEA_uber_gradient_by_layer(
     dtheta=0.00001,
     return_analytic_suite=False,
     post_selected=False,
-    entropy_regions=[[]],
+    entropy_regions=None,
     periodic=False,
     get_layered_results=False,
     ham_type="z0z1",
     return_psi_list=False,
 ):
+
+    if entropy_regions = None:
+        entropy_regions = [[]]
+
     layer_results = []
 
     if gradient_technique == "shift":
@@ -635,11 +642,15 @@ def GG_gradient_by_layer(
     dtheta=0.00001,
     return_analytic_suite=False,
     post_selected=False,
-    entropy_regions=[[]],
+    entropy_regions=None,
     periodic=False,
     get_layered_results=False,
     ham_type="z0z1",
 ):
+
+    if entropy_regions is None:
+        entropy_regions = [[]]
+
     if np.any(rotations) == None:
         raise TypeError("GG ansatz needs rotation gate types")
 
@@ -762,31 +773,7 @@ def gradients_GG(
 
     elif gradient_technique == "shift":
         raise NotImplementedError
-
-        # aware_gradient = 0
-        # unaware_gradient = 0
-
-        # grouped_psi_list = np.reshape(psi_list, tuple(
-        #     [n_qubits, 3, *[2 for _ in range(n_qubits)]]))
-
-        # grouped_p = np.reshape(p, (n_qubits, 3))
-
-        # for k, psi_list in enumerate(grouped_psi_list):
-        #     O = []
-        #     for psi in psi_list:
-        #         cost_psi = ApplyHam(psi, ham_type, periodic)
-        #         O.append(Inner(psi, cost_psi).real)
-        #     cost_p, cost_p_plus, cost_p_minus = O
-        #     prob, prob_plus, prob_minus = grouped_p[k]
-
-        #     aware_gradient += 0.5 * \
-        #         ((cost_p_plus*prob_plus - cost_p_minus*prob_minus) /
-        #          prob - (prob_plus-prob_minus)*cost_p/prob)
-        #     unaware_gradient += 0.5 * \
-        #         (cost_p_plus*prob_plus - cost_p_minus*prob_minus)/prob
-
-        # return unaware_gradient, aware_gradient
-
+        
     else:  # analytical gradient
         C = Inner(psi, cost_psi).real
         # Calculate the gradients using eqn 22 in the notes. Note we are not multiplying by p because of MC sampling
@@ -871,11 +858,15 @@ def HEA_gradient_by_layer(
     dtheta=0.00001,
     return_analytic_suite=False,
     post_selected=False,
-    entropy_regions=[[]],
+    entropy_regions=None,
     periodic=False,
     get_layered_results=False,
     ham_type="z0z1",
 ):
+
+    if entropy_regions = None: 
+        entropy_regions = [[]]
+
     layer_results = []
 
     if gradient_technique == None:
@@ -1217,11 +1208,15 @@ def HVA_gradient_by_layer(
     dtheta=0.00001,
     return_analytic_suite=False,
     post_selected=False,
-    entropy_regions=[[]],
+    entropy_regions=None,
     periodic=False,
     get_layered_results=False,
     ham_type="z0z1",
 ):
+
+    if entropy_regions is None:
+        entropy_regions = [[]]
+
     layer_results = []
 
     if gradient_technique == "shift":
