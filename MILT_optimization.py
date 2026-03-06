@@ -447,7 +447,6 @@ def optimize_with_scipy(
     ham_type,
     gradient,
 ):
-    global costs_at_each_iteration
     costs_at_each_iteration = []
     iteration_ticker = 0
 
