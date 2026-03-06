@@ -56,10 +56,6 @@ def ApplyGate(U, qubits, psi):
         [chr(97 + i - 32 * qubits.count(i)) for i in range(len(psi.shape))]
     )
 
-    #     print("U", U)
-    #     print("qubits", qubits)
-    #     print("indices",indices)
-
     return np.einsum(indices, U, psi)
 
 
@@ -201,7 +197,6 @@ def apply_XXZ_1_1_4(psi, periodic, n_qubits):
     psi_original = psi
     psi_cost = ApplyGate(ham_1_1_4, [0, 1], psi_original)
 
-    #     print("n_qubits", n_qubits)
 
     for i in range(1, n_qubits - 1):
         psi_cost = psi_cost + ApplyGate(ham_1_1_4, [i, i + 1], psi_original)
@@ -217,7 +212,6 @@ def apply_XXZ_1_1_05(psi, periodic, n_qubits):
     psi_original = psi
     psi_cost = ApplyGate(ham_1_1_05, [0, 1], psi_original)
 
-    #     print("n_qubits", n_qubits)
 
     for i in range(1, n_qubits - 1):
         psi_cost = psi_cost + ApplyGate(ham_1_1_05, [i, i + 1], psi_original)
@@ -557,7 +551,6 @@ def HEA_uber_gradient_by_layer(
     layer_H(n_qubits, psi_list, [q for q in range(n_qubits)])
 
     for l in range(n_layers):
-        # print(l)
         # 1: Rotation gates on all qubits
         layer_rot_GG(
             n_qubits,
@@ -614,7 +607,6 @@ def HEA_uber_gradient_by_layer(
     if get_layered_results:
         return layer_results
     else:
-        #         print(psi_list)
         return gradients_GG(
             n_qubits,
             psi_list,
@@ -674,7 +666,6 @@ def GG_gradient_by_layer(
     layer_y_rot_GG(n_qubits, psi_list, np.pi)
 
     for l in range(n_layers):
-        # print(l)
         # 1: Rotation gates on all qubits
         layer_rot_GG(
             n_qubits, psi_list, parameters, rotations, current_param, gradient_index
@@ -722,7 +713,6 @@ def GG_gradient_by_layer(
     if get_layered_results:
         return layer_results
     else:
-        #         print(psi_list)
         return gradients_GG(
             n_qubits,
             psi_list,
@@ -773,7 +763,7 @@ def gradients_GG(
 
     elif gradient_technique == "shift":
         raise NotImplementedError
-        
+
     else:  # analytical gradient
         C = Inner(psi, cost_psi).real
         # Calculate the gradients using eqn 22 in the notes. Note we are not multiplying by p because of MC sampling
@@ -1506,8 +1496,6 @@ def layer_paulipauli_derivative_yyxx(n_qubits, psi, theta, odd, pbc=False):
     UYY = rotrot(theta, 2, False)
     d_UYY = rotrot(theta, 2, True)
 
-    #     print("UYY", UYY)
-    #     print(d_UYY)
 
     UXX = rotrot(theta, 1, False)
     d_UXX = rotrot(theta, 1, True)
