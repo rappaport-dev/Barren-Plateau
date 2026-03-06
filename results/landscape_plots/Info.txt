@@ -1,0 +1,8 @@
+Reproducing the Cost Landscapes (Figure 5):
+
+    To reproduce the figures from the paper: Run make_landscape.py with your desired XYC function. This uses the provided XYC data files containing the original grid evaluations.
+
+    To produce your own XYC data files around a local minimum: Run make_landscape.py with a optimization run file from optimization_results, then use make_landscape.py on the generated XYC file. 
+    
+    Note: The original random seed for the mid-circuit measurement placement was not preserved. Running the script now will generate a cost landscape with the same probability p, but the exact topological features will differ from the printed manuscript. The code has since been updated with a fixed random seed for all future runs.
+    * For further assistance, please contact the code maintainer.

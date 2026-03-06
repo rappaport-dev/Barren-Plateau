@@ -1,0 +1,1 @@
+This file contains the data that creates both the z0z1 (Figure 4) and xxz (Figure S4) results. 
