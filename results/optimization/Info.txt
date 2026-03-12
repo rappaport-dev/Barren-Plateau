@@ -1,0 +1,3 @@
+This file contains the data  and associated script that creates both the z0z1 (Figure 4) and xxz (Figure S4) results. 
+
+To create a VQE optimization trace, run perform_optimizations.py. The results can be used in results/landscape_plots to produce landscapes.

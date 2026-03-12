@@ -12,9 +12,7 @@ import random
 import os
 import numpy as np
 from dask.distributed import Client, as_completed
-import quspin
-
-code_version = "1.2"
+# import quspin
 
 ham_1_1_4 = of.get_sparse_operator(
     of.QubitOperator("X0 X1", 1)
@@ -528,7 +526,7 @@ def HEA_uber_gradient_by_layer(
     return_psi_list=False,
 ):
 
-    if entropy_regions = None:
+    if entropy_regions is None:
         entropy_regions = [[]]
 
     layer_results = []
@@ -854,7 +852,7 @@ def HEA_gradient_by_layer(
     ham_type="z0z1",
 ):
 
-    if entropy_regions = None: 
+    if entropy_regions is None: 
         entropy_regions = [[]]
 
     layer_results = []

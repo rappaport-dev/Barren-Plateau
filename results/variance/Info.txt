@@ -1,0 +1,3 @@
+These datafiles and scripts correspond to Figure 3 of the paper.
+
+To generate variance data, use generate_variance_data.py. The results can be visualized with plot_variance_data.py.

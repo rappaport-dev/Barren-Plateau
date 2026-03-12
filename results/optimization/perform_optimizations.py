@@ -7,6 +7,9 @@ from tqdm import tqdm
 
 from MILT_optimization import *
 
+import sys
+sys.path.append('../..') 
+
 """
 Run this file to collect our data for the barren plateaus optimization runs.
 """

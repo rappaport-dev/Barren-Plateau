@@ -3,8 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
-# Point this to the new directory structure from the collection script
-file_path = "optimization_data/new_prob_0.8/XYC_z0z1_0.8_0.npy"
+import sys
+sys.path.append('../..') 
+
+# Point this to where XYC data is being stored  
+file_path = "data/XYC_z0z1_0.8_0.npy"
 
 # Extract just the base name (e.g., "XYC_z0z1_0.8_0") to prevent .npy.pdf outputs
 base_name = os.path.splitext(os.path.basename(file_path))[0]

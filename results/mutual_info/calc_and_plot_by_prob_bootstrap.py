@@ -17,7 +17,7 @@ if __name__ == "__main__":
     probs = [0,.05,.1,.2,.3,.5,.7,.9]
 
     # results are in shape (num_qubits, num_prob,n_layers,2)
-    results = np.load("aggregated_data_bootstrap.npy")
+    results = np.load("data/aggregated_data_bootstrap.npy")
 
     for i, n_qubits in enumerate(qubits):
 
