@@ -229,13 +229,15 @@ def generate_mutual_info_change_p_and_m_at_same_time(
         parameters = random_parameters(num_parameters(n_qubits, n_layers, "HEA2"))
         # appending a tuple (2, n_layers) to samples
         samples.append(
-            probability_to_measure_one_given_parameters_delayed(
+            # probability_to_measure_one_given_parameters_delayed(
+            #     n_qubits, n_layers, parameters, measurements
+            probability_to_measure_one_given_parameters(
                 n_qubits, n_layers, parameters, measurements
             )
         )
 
-    results = dask.compute(*samples)
-    results = np.reshape(results, (n_ap, 2, n_layers))
+#   results = dask.compute(*samples)
+    results = np.reshape(samples, (n_ap, 2, n_layers))
 
     # overall shape (n_ap, 2, n_layers)
     return results

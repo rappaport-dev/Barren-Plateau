@@ -496,7 +496,7 @@ def multiple_optimization_runs(
     thetas,
 ):
     # Creating the directory name based on provided parameters and global variable
-    full_dir_path = f"{dir_name}_{ansatz}_q{n_qubits}_l{n_layers}_shots{n_shots}_post{post_selected}_{ham_type}_{gradient}_thetas{len(thetas)}_version{code_version}"
+    full_dir_path = f"{dir_name}_{ansatz}_q{n_qubits}_l{n_layers}_shots{n_shots}_post{post_selected}_{ham_type}_{gradient}_thetas{len(thetas)}"
 
     if not os.path.exists(full_dir_path):
         os.makedirs(full_dir_path)
@@ -551,6 +551,6 @@ def multiple_optimization_runs(
     plt.legend()
     plt.savefig(os.path.join(full_dir_path, "all_run_plot.png"))
 
-    np.save(os.path.join(full_dir_path, "all_run_info.npy"), all_run_info)
+    np.save(os.path.join(full_dir_path, "all_run_info.npy"), np.array(all_run_info, dtype=object))
 
     return all_run_info

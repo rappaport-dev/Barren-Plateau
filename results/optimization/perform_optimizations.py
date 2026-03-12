@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from tqdm import tqdm
 
-from MILT_optimization import *
-
 import sys
 sys.path.append('../..') 
+
+from MILT_optimization import *
 
 """
 Run this file to collect our data for the barren plateaus optimization runs.
@@ -26,8 +26,8 @@ if __name__ == "__main__":
     os.makedirs(base_dir, exist_ok=True)
 
     ansatz = "HEA2"
-    n_qubits = 8
-    n_layers = 16
+    n_qubits = 4 
+    n_layers = 20
     n_shots = 1 # change this line as needed
     post_selected = True # change this line as needed
     parallel = False
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     thetas_path = os.path.join(base_dir, "thetas.npy")
     if not os.path.exists(thetas_path):
         thetas = [random_parameters(num_parameters(n_qubits, n_layers, ansatz)) for _ in range(10)]
-        print("Generated new thetas:", thetas)
+        print("Generated new thetas")
         np.save(thetas_path, thetas)
     else:
         print(f"'{thetas_path}' already exists. Not overwriting.")
@@ -102,8 +102,8 @@ if __name__ == "__main__":
             ax.plot_surface(X, Y, C, cmap=cm.coolwarm, linewidth=0, antialiased=False)
             
             # Save plot and data nicely inside the specific run directory
-            plot_file = os.path.join(dir_name, f'landscape_{ham_type}_{probability}_{run_i}.pdf')
-            data_file = os.path.join(dir_name, f'XYC_{ham_type}_{probability}_{run_i}.npy')
+            plot_file = f'landscape_{ham_type}_{probability}_{run_i}.pdf'
+            data_file = f'XYC_{ham_type}_{probability}_{run_i}.npy'
             
             plt.savefig(plot_file, transparent=True, dpi=500)
             plt.close(fig) # Prevent matplotlib from keeping the figure open in memory

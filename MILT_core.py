@@ -1,18 +1,24 @@
 from scipy.optimize import minimize
 import ast
 import openfermion as of
+import dask
 from dask.diagnostics import ProgressBar
 from dask import delayed, compute
 import matplotlib.pyplot as plt
 from scipy.stats import bootstrap
-from tqdm import tqdm  # assuming my code is going to be run in notebook
+from tqdm import tqdm  
 from collections import namedtuple
 import numpy as np
 import random
 import os
 import numpy as np
 from dask.distributed import Client, as_completed
+
+# Warning: To use entropy features, quspin must be installed.
+# It is deactivated by default as it is picky about python version.
 # import quspin
+
+# Note: The code only supports serial calculations at this time.
 
 ham_1_1_4 = of.get_sparse_operator(
     of.QubitOperator("X0 X1", 1)
@@ -762,8 +768,15 @@ def gradients_GG(
     elif gradient_technique == "shift":
         raise NotImplementedError
 
-    else:  # analytical gradient
+    elif gradient_technique is None:  # analytical gradient
+
         C = Inner(psi, cost_psi).real
+        return C 
+
+    else: 
+        # return C
+        C = Inner(psi, cost_psi).real
+
         # Calculate the gradients using eqn 22 in the notes. Note we are not multiplying by p because of MC sampling
         term1 = Inner(psi_list[1], cost_psi)  # first term
         # first term - second term
@@ -775,13 +788,15 @@ def gradients_GG(
 
         if return_analytic_suite:
             return (
-                C.cpu().numpy(),
-                unaware_gradient.cpu().numpy(),
-                aware_gradient.cpu().numpy(),
+                # C.cpu().numpy(),
+                # unaware_gradient.cpu().numpy(),
+                # aware_gradient.cpu().numpy(),
+
+                C, unaware_gradient, aware_gradient
             )
         else:
-            return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
-
+            # return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
+            return unaware_gradient, aware_gradient
 
 def layer_rot_GG(
     n_qubits,
@@ -1016,12 +1031,14 @@ def gradients_HEA(
 
         return unaware_gradient, aware_gradient
 
-    else:  # analytical gradient
-        # NOTE: right now code is in a mode just to calculate cost functions without caring about the gradients.
-        # this part definetly needs to be fixed if you actually want to uise gradients
+    elif gradient_technique is None:  
 
         C = Inner(psi, cost_psi).real
-        return C
+        return C 
+
+    else: 
+        # return C
+        C = Inner(psi, cost_psi).real
 
         # Calculate the gradients using eqn 22 in the notes. Note we are not multiplying by p because of MC sampling
         term1 = Inner(psi_list[1], cost_psi)  # first term
@@ -1034,12 +1051,15 @@ def gradients_HEA(
 
         if return_analytic_suite:
             return (
-                C.cpu().numpy(),
-                unaware_gradient.cpu().numpy(),
-                aware_gradient.cpu().numpy(),
+                # C.cpu().numpy(),
+                # unaware_gradient.cpu().numpy(),
+                # aware_gradient.cpu().numpy(),
+
+                C, unaware_gradient, aware_gradient
             )
         else:
-            return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
+            # return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
+            return unaware_gradient, aware_gradient
 
 
 def layer_rot(
@@ -1118,7 +1138,7 @@ def row_with_one_gradient(n_qubits, psi, parameter, rotation, gradient_qubit):
 
 
 def product_rule_psi(n_qubits, psi, parameter, rotation):
-    original_psi = psi.clone()
+    original_psi = np.copy(psi)
     psi_result = np.zeros(psi.shape)
     for q in range(n_qubits):
         gradient_psi_term = row_with_one_gradient(
@@ -1338,15 +1358,26 @@ def gradients_HVA(
     unaware_gradient = 2 * term1.real
     aware_gradient = 2 * term2.real
 
+    # if return_analytic_suite:
+    #     return (
+    #         C.cpu().numpy(),
+    #         unaware_gradient.cpu().numpy(),
+    #         aware_gradient.cpu().numpy(),
+    #     )
+    # else:
+    #     return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
+
     if return_analytic_suite:
         return (
-            C.cpu().numpy(),
-            unaware_gradient.cpu().numpy(),
-            aware_gradient.cpu().numpy(),
+            # C.cpu().numpy(),
+            # unaware_gradient.cpu().numpy(),
+            # aware_gradient.cpu().numpy(),
+
+            C, unaware_gradient, aware_gradient
         )
     else:
-        return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
-
+        # return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
+        return unaware_gradient, aware_gradient
 
 def layer_paulixpauli(
     n_qubits,

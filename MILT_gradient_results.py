@@ -346,8 +346,6 @@ def generate_entropy_results(
             result = entropy_means(
                 q, n_layers, n_samples, p, ansatz, True, file_name, ham_type
             )
-            print(result.shape)
-            return
 
             results[n_g, n_p, n_q, :] = bootstrap_result
 

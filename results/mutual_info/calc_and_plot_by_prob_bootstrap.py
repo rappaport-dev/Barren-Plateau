@@ -32,10 +32,9 @@ if __name__ == "__main__":
             low = results[i,j,1]
             high = results[i,j,2]
 
-            print("mean, low, high")
-            print(mean,low,high)
-            print("error bar sizes")
-            print(mean-low,high-mean)
+            # print("mean, low, high")
+            # print(mean,low,high)
+            # print("error bar sizes")
             
             # Load your data based on n_qubits and p
             results_for_each_p.append(mean)
@@ -44,9 +43,9 @@ if __name__ == "__main__":
         yerr = np.array([[abs(err[0]) for err in er_each_p],
                           [err[1] for err in er_each_p]])
 
-        print("probs",probs)
-        print("results for each p", results_for_each_p)
-        print("yerr", er_each_p)
+        # print("probs",probs)
+        # print("results for each p", results_for_each_p)
+        # print("yerr", er_each_p)
         plt.errorbar(x=probs, y=results_for_each_p, yerr = yerr, label = f"{n_qubits}", marker='.')
 
     plt.xlabel("Probability")
