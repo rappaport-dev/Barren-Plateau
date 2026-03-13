@@ -4,6 +4,8 @@ from MILT_mutual_information import *
 
 """
 This version of the code calculates mutual info over n_ap samples, going through different thetas and measurement gate placements at the same time.  
+
+Note that this is currently configured to be done serially.
 """
 
 if __name__ == "__main__":

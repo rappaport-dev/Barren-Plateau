@@ -1,7 +1,0 @@
-dask
-distinctipy
-matplotlib
-numpy
-openfermion
-scipy
-tqdm
