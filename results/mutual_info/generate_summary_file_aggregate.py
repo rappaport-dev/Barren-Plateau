@@ -7,7 +7,7 @@ from MILT_mutual_information import *
 
 # This file is meant to work with our data, which has been saved in a few different formats as the code was developed.
 # If generating new data, the process to plot the data is much easier and you won't need to work with different shapes.
-# It calculates the confidence intervals from the raw data and saves it. 
+# It calculates the confidence intervals from the raw data and saves it.
 
 
 def load_and_aggregate_data(directory):
@@ -19,11 +19,9 @@ def load_and_aggregate_data(directory):
 
     # Initialize the aggregated data array
     # Shape: (qubits, probabilities, 3) where the 3 holds [mean, CI_low, CI_high]
-    aggregated_data = np.full(
-        (len(num_qubits_values), len(p_values), 3), np.nan
-    ) 
+    aggregated_data = np.full((len(num_qubits_values), len(p_values), 3), np.nan)
 
-        # Iterate over all combinations of num_qubits, and probabilities 
+    # Iterate over all combinations of num_qubits, and probabilities
     for i, num_qubits in enumerate(num_qubits_values):
         for j, p_value in enumerate(p_values):
             file_found = False
@@ -32,7 +30,7 @@ def load_and_aggregate_data(directory):
             for nap in nap_values:
                 if file_found:
                     break
-            # Skip p=0 for system sizes under 18 based on available data
+                # Skip p=0 for system sizes under 18 based on available data
                 if p_value == 0 and num_qubits < 18:
                     continue
                 else:
@@ -42,22 +40,26 @@ def load_and_aggregate_data(directory):
                     if os.path.isfile(path):
                         file_data = np.load(path)
                         print(f"Loaded {filename} with shape {file_data.shape}")
-                        file_found = True 
-                        mean, confidence_interval = mutual_info_bootstrap(file_data, 2*num_qubits)
+                        file_found = True
+                        mean, confidence_interval = mutual_info_bootstrap(
+                            file_data, 2 * num_qubits
+                        )
 
                         # Calculate mean and error across the axis corresponding to different samples (assuming axis 0)
                         # Store the results in the array
                         aggregated_data[i, j, 0] = mean  # Storing mean
-                        aggregated_data[i, j, 1] = confidence_interval.low  # Storing error
-                        aggregated_data[i,j,2] = confidence_interval.high
+                        aggregated_data[i, j, 1] = (
+                            confidence_interval.low
+                        )  # Storing error
+                        aggregated_data[i, j, 2] = confidence_interval.high
                     else:
                         continue
-                     
+
     output_file = os.path.join(directory, "aggregated_data_bootstrap.npy")
     np.save(output_file, aggregated_data)
     print(f"Data aggregation complete and saved to {output_file}.")
 
+
 if __name__ == "__main__":
     directory = "."
     load_and_aggregate_data(directory)
-

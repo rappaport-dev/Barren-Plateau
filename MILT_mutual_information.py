@@ -215,11 +215,10 @@ def generate_mutual_info_samples_dask_change_all_parameters_and_measurements(
     # overall shape (n_p, n_a, 2, n_layers)
     return results
 
-def generate_mutual_info_change_p_and_m_at_same_time(
-    n_qubits, n_layers, n_ap, p 
-):
+
+def generate_mutual_info_change_p_and_m_at_same_time(n_qubits, n_layers, n_ap, p):
     """
-    Generate mutual information by varying both measurement gate locations and theta at the same time.  
+    Generate mutual information by varying both measurement gate locations and theta at the same time.
     """
     # generate list of random theta_a
     samples = []
@@ -236,7 +235,7 @@ def generate_mutual_info_change_p_and_m_at_same_time(
             )
         )
 
-#   results = dask.compute(*samples)
+    #   results = dask.compute(*samples)
     results = np.reshape(samples, (n_ap, 2, n_layers))
 
     # overall shape (n_ap, 2, n_layers)
@@ -254,7 +253,7 @@ def mutual_information_only_parameters(n_qubits, n_layers, n_a, measurements):
 
     p_bi = np.mean(p_i_m_given_thetas, axis=(0))
 
-    p_bi = p_bi[np.newaxis,:]
+    p_bi = p_bi[np.newaxis, :]
 
     # sum over every axis except for the number of layers, for both aware + unaware
     mutual_info_mean = -np.sum(
@@ -284,7 +283,7 @@ def mutual_info_different_measurements(n_qubits, n_layers, n_a, n_p, p):
     # average over n_a
     p_bi = np.mean(p_i_m_given_thetas, axis=(1))
 
-    # broadcast out p_bi again 
+    # broadcast out p_bi again
     p_bi = p_bi[:, np.newaxis, :, :]
 
     # sum over n_a and pos/neg outcome
@@ -296,6 +295,7 @@ def mutual_info_different_measurements(n_qubits, n_layers, n_a, n_p, p):
         mutual_info_measurement_groups, axis=0
     ) / np.sqrt(n_p)
 
+
 def mutual_info_changeall(p_i_m_given_thetas):
     """
     Given n_{ap} p_i_m_given_thetas samples, calculate the average mutual entropy
@@ -306,16 +306,19 @@ def mutual_info_changeall(p_i_m_given_thetas):
     # average over n_ap
     p_bi = np.mean(p_i_m_given_thetas, axis=(0))
 
-    p_bi = p_bi[np.newaxis,:]
+    p_bi = p_bi[np.newaxis, :]
 
-    mutual_info = -np.sum(p_i_m_given_thetas * np.log2(p_bi / p_i_m_given_thetas), axis=(1))
+    mutual_info = -np.sum(
+        p_i_m_given_thetas * np.log2(p_bi / p_i_m_given_thetas), axis=(1)
+    )
 
     return mutual_info
 
+
 def mutual_info_standard_error(p_i_m_given_thetas):
     # Note that this function removes rows with np.nan. I'm assuming for now
-    # this is okay when there is only one or two rows out of 10,000 that do 
-    # this. 
+    # this is okay when there is only one or two rows out of 10,000 that do
+    # this.
 
     # Step 1: Get a boolean p_i_m_given_thetasay where True represents NaN
     nan_mask = np.isnan(p_i_m_given_thetas)
@@ -329,7 +332,10 @@ def mutual_info_standard_error(p_i_m_given_thetas):
 
     mutual_info = mutual_info_changeall(p_i_m_given_thetas)
 
-    return np.mean(mutual_info, axis=0), np.std(mutual_info, axis=0) / np.sqrt(len(mutual_info))
+    return np.mean(mutual_info, axis=0), np.std(mutual_info, axis=0) / np.sqrt(
+        len(mutual_info)
+    )
+
 
 def mutual_info_bootstrap(p_i_m_given_thetas, examined_layer):
 
@@ -337,10 +343,12 @@ def mutual_info_bootstrap(p_i_m_given_thetas, examined_layer):
 
     mutual_info = mutual_info_changeall(p_i_m_given_thetas)
 
-    print("mutual info shape", mutual_info.shape) 
+    print("mutual info shape", mutual_info.shape)
 
     mutual_info = mutual_info[:, examined_layer]
 
-    bootstrap_result = bootstrap((mutual_info,), np.mean, confidence_level=.67,random_state=rng)
-    
-    return np.mean(mutual_info), bootstrap_result.confidence_interval 
+    bootstrap_result = bootstrap(
+        (mutual_info,), np.mean, confidence_level=0.67, random_state=rng
+    )
+
+    return np.mean(mutual_info), bootstrap_result.confidence_interval

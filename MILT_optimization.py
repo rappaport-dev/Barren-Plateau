@@ -551,6 +551,9 @@ def multiple_optimization_runs(
     plt.legend()
     plt.savefig(os.path.join(full_dir_path, "all_run_plot.png"))
 
-    np.save(os.path.join(full_dir_path, "all_run_info.npy"), np.array(all_run_info, dtype=object))
+    np.save(
+        os.path.join(full_dir_path, "all_run_info.npy"),
+        np.array(all_run_info, dtype=object),
+    )
 
     return all_run_info

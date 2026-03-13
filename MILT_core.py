@@ -1,18 +1,6 @@
-from scipy.optimize import minimize
-import ast
 import openfermion as of
-import dask
-from dask.diagnostics import ProgressBar
-from dask import delayed, compute
-import matplotlib.pyplot as plt
-from scipy.stats import bootstrap
-from tqdm import tqdm  
-from collections import namedtuple
 import numpy as np
 import random
-import os
-import numpy as np
-from dask.distributed import Client, as_completed
 
 # Warning: To use entropy features, quspin must be installed.
 # It is deactivated by default as it is picky about python version.
@@ -142,9 +130,7 @@ def rot(theta, i, grad=0):
         return np.cos(theta / 2) * np.eye(
             2,
             dtype=np.complex64,
-        ) - 1j * np.sin(
-            theta / 2
-        ) * pauli(i)
+        ) - 1j * np.sin(theta / 2) * pauli(i)
     else:
         return -0.5 * np.sin(theta / 2) * np.eye(
             2,
@@ -201,7 +187,6 @@ def apply_XXZ_1_1_4(psi, periodic, n_qubits):
     psi_original = psi
     psi_cost = ApplyGate(ham_1_1_4, [0, 1], psi_original)
 
-
     for i in range(1, n_qubits - 1):
         psi_cost = psi_cost + ApplyGate(ham_1_1_4, [i, i + 1], psi_original)
 
@@ -215,7 +200,6 @@ def apply_XXZ_1_1_05(psi, periodic, n_qubits):
     "applies the XXZ hamiltonian to psi"
     psi_original = psi
     psi_cost = ApplyGate(ham_1_1_05, [0, 1], psi_original)
-
 
     for i in range(1, n_qubits - 1):
         psi_cost = psi_cost + ApplyGate(ham_1_1_05, [i, i + 1], psi_original)
@@ -371,9 +355,7 @@ def apply_measure(psi_list, measurements, pM, gradient_technique, post_selected=
         original_p = 1
 
         for i in range(len(psi_list)):
-            p0 = (
-                np.abs(Inner(ApplyGate(measure(0), q, psi_list[i]), psi_list[i]))
-            )
+            p0 = np.abs(Inner(ApplyGate(measure(0), q, psi_list[i]), psi_list[i]))
 
             p0, p1 = prob_rounder(p0, i)
 
@@ -769,11 +751,10 @@ def gradients_GG(
         raise NotImplementedError
 
     elif gradient_technique is None:  # analytical gradient
-
         C = Inner(psi, cost_psi).real
-        return C 
+        return C
 
-    else: 
+    else:
         # return C
         C = Inner(psi, cost_psi).real
 
@@ -791,12 +772,14 @@ def gradients_GG(
                 # C.cpu().numpy(),
                 # unaware_gradient.cpu().numpy(),
                 # aware_gradient.cpu().numpy(),
-
-                C, unaware_gradient, aware_gradient
+                C,
+                unaware_gradient,
+                aware_gradient,
             )
         else:
             # return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
             return unaware_gradient, aware_gradient
+
 
 def layer_rot_GG(
     n_qubits,
@@ -867,7 +850,7 @@ def HEA_gradient_by_layer(
     ham_type="z0z1",
 ):
 
-    if entropy_regions is None: 
+    if entropy_regions is None:
         entropy_regions = [[]]
 
     layer_results = []
@@ -1031,12 +1014,11 @@ def gradients_HEA(
 
         return unaware_gradient, aware_gradient
 
-    elif gradient_technique is None:  
-
+    elif gradient_technique is None:
         C = Inner(psi, cost_psi).real
-        return C 
+        return C
 
-    else: 
+    else:
         # return C
         C = Inner(psi, cost_psi).real
 
@@ -1054,8 +1036,9 @@ def gradients_HEA(
                 # C.cpu().numpy(),
                 # unaware_gradient.cpu().numpy(),
                 # aware_gradient.cpu().numpy(),
-
-                C, unaware_gradient, aware_gradient
+                C,
+                unaware_gradient,
+                aware_gradient,
             )
         else:
             # return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
@@ -1372,12 +1355,14 @@ def gradients_HVA(
             # C.cpu().numpy(),
             # unaware_gradient.cpu().numpy(),
             # aware_gradient.cpu().numpy(),
-
-            C, unaware_gradient, aware_gradient
+            C,
+            unaware_gradient,
+            aware_gradient,
         )
     else:
         # return unaware_gradient.cpu().numpy(), aware_gradient.cpu().numpy()
         return unaware_gradient, aware_gradient
+
 
 def layer_paulixpauli(
     n_qubits,
@@ -1524,7 +1509,6 @@ def layer_paulipauli_derivative_zz(n_qubits, psi, theta, odd, pbc=True):
 def layer_paulipauli_derivative_yyxx(n_qubits, psi, theta, odd, pbc=False):
     UYY = rotrot(theta, 2, False)
     d_UYY = rotrot(theta, 2, True)
-
 
     UXX = rotrot(theta, 1, False)
     d_UXX = rotrot(theta, 1, True)

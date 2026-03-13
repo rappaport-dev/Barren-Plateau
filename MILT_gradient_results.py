@@ -1,5 +1,5 @@
 from MILT_core import *
-from dask.distributed import Client, as_completed
+from dask.distributed import Client
 from tqdm.auto import tqdm
 import dask
 
