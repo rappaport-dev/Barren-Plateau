@@ -1,7 +1,7 @@
 # Measurement Induced Landscape Transitions (MILT)
 
 ## Overview
-This repository contains the source code for "Measurement-induced landscape transitions in hybrid variational quantum circuits," The code is structured to facilitate the reproduction of results and figures presented in the paper. Key computations are performed by four primary Python scripts, labeled `MILT_`, which are utilized by various other scripts stored along with their outputs in the `results` folder.
+This repository contains the source code for "Measurement-Induced Landscape Transitions and Coding Barren Plateaus in Hybrid Variational Quantum Circuits". The code is structured to facilitate the reproduction of results and figures presented in the paper. Key computations are performed by four primary Python scripts, labeled `MILT_`, which are utilized by various other scripts stored along with their outputs in the `results` folder.
 
 **Technical Summary**: the code is a high-performance Python library for analyzing **Measurement-Induced Landscape Transitions** in Variational Quantum Eigensolvers (VQE). This codebase implements parallelized gradient descent strategies to mitigate Barren Plateaus in hybrid quantum circuits.
 
